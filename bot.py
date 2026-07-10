@@ -3,10 +3,19 @@ from telegram import Update
 from telegram.ext import Application, CommandHandler, MessageHandler, filters, ContextTypes
 import yt_dlp
 
+import os
+# ... keep your other imports ...
+
 # Enable logging
 logging.basicConfig(level=logging.INFO)
 
-TOKEN = "8963079163:AAGyZyJQpVWxlvF6X-n8c9zfJ4ZLnLzN0cc"
+# This reads the token directly from Render's environment settings
+TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
+
+if not TOKEN:
+    raise ValueError("Error: TELEGRAM_BOT_TOKEN environment variable not set.")
+    
+# ... rest of your script stays identical ...
 
 def search_and_extract(query: str, limit=3):
     """Uses yt-dlp to search Pornhub directly and extract matching download links."""
