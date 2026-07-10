@@ -20,7 +20,6 @@ class HealthCheckHandler(BaseHTTPRequestHandler):
         self.wfile.write(b"Bot is alive!")
 
 def run_health_server():
-    # Render automatically provides a PORT environment variable
     port = int(os.environ.get("PORT", 8080))
     server = HTTPServer(("0.0.0.0", port), HealthCheckHandler)
     logging.info(f"Health check server running on port {port}")
@@ -73,29 +72,10 @@ def main():
     if not TOKEN:
         raise ValueError("TELEGRAM_BOT_TOKEN environment variable not set.")
 
-    # Start the dummy server in a separate thread before launching the bot loop
+    # Start the dummy server in a separate thread
     threading.Thread(target=run_health_server, daemon=True).start()
 
     # Launch Telegram Bot Polling
-    app = Application.builder().token(TOKEN).build()
-    app.add_handler(CommandHandler("start", start))
-    app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
-    
-    print("Bot is running...")
-    app.run_polling()
-
-if __name__ == "__main__":
-    main()        return
-
-    for video in videos:
-        title = video.get('title')
-        dl_link = video.get('url')
-        
-        if dl_link:
-            caption = f"🎬 **{title}**\n\n[🔗 Click Here to Download/Watch Direct MP4]({dl_link})"
-            await update.message.reply_text(caption, parse_mode="Markdown")
-
-def main():
     app = Application.builder().token(TOKEN).build()
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle_message))
